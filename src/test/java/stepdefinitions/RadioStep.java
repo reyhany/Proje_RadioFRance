@@ -44,18 +44,29 @@ public class RadioStep {
     public void click_le_button_se_connecter() {
         radioPage.clikBtnSeConnecter();
     }
+
     @Then("Click sur Inscription")
     public void click_sur_inscription() {
         radioPage.clikBtnInscription();
     }
 
+    @Then("Ecrire {string} adress and {string} dans les champs")
+    public void ecrire_adress_and_dans_les_champs(String email, String password) {
+        radioPage.remplirLeFormPourInscription();
+    }
 
+    @Then("Click sur radiobox pour accepter les conditions")
+    public void click_sur_radiobox_pour_accepter_les_conditions() {
+        radioPage.clikRadioBtnPourCondition();
+    }
 
+    @When("Click sur le button S`inscrire")
+    public void click_sur_le_button_s_inscrire() {
+        radioPage.clikBtnInscrire();
+    }
 
-
-
-
-
-
-
+    @Then("Verifie que le message {string} apparait.")
+    public void verifie_que_le_message_apparait(String message) {
+      //  radioPage.verificationAvecLocationText(message,message);
+    }
 }
