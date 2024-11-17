@@ -12,27 +12,28 @@ public class RadioStep {
 
     RadioPage radioPage = new RadioPage();
     public RadioStep(){
-
     }
 
 
     @Then("Ana sayfada olduğumu doğruluyorum")
     public void anaSayfayiDogrula() {
-
     }
+
     @When("{string} düğmesine tıklarsam")
     public void düğmesineTikla(String aramaButonu) {
         radioPage.clickBtnRechercher();
+        radioPage.clickBtnRechercher2();
     }
 
     @When("Arama alanına {string} yazarsam")
-    public void aramaYap(String histoire) {
+    public void aramaYap(String histoire) throws InterruptedException {
         radioPage.aramaYap(histoire);
+        radioPage.clickBtnRechercher2();
 
     }
     @Then("Histoire için sonuçlar gorunmeli")
     public void sonuclariDogrula() throws InterruptedException {
-
+        //radioPage.waitForSearchResults(); // Sonuçların görünmesini bekliyoruz.
         String expectedUrl = "https://www.radiofrance.fr/recherche?term=Histoire";
         System.out.println("expectedUrl = " + expectedUrl);
         String actualUrl = Driver.getCurrentDriver().getCurrentUrl();
