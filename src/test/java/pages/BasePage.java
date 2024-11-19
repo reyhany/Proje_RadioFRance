@@ -10,14 +10,18 @@ import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.Driver;
 
 
 import java.time.Duration;
+import java.util.function.Function;
 
 public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
+
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -91,7 +95,6 @@ public class BasePage {
     }
 
 
-
     // Yardımcı metodlar
     protected boolean isAndroid() {
         return driver instanceof AndroidDriver;
@@ -116,4 +119,35 @@ public class BasePage {
         }
         // iOS için scrollToElement metodu eklenebilir
     }
-}
+
+
+    public void clickElementByText(String text) {
+        try {
+            WebDriver driver = Driver.getCurrentDriver();
+            // Text'e göre element bulma
+            WebElement element = driver.findElement(By.xpath("//*[contains(text(),'" + text + "')]"));
+
+            // Elementin üzerine tıklama
+            element.click();
+            System.out.println("Element with text '" + text + "' clicked successfully.");
+        } catch (Exception e) {
+            System.out.println("Could not click element with text '" + text + "'. Error: " + e.getMessage());
+        }
+
+    }
+
+
+
+    public void explicitWait(int second,By locator){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(second));
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        element.click();
+
+    }
+
+
+    }
+
+
+
+
