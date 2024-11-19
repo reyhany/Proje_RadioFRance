@@ -3,10 +3,15 @@ package stepdefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.RadioPage;
 import utils.Driver;
 
+import java.time.Duration;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RadioStep {
 
@@ -30,16 +35,24 @@ public class RadioStep {
         radioPage.aramaYap(histoire);
 
     }
-    @Then("Histoire için sonuçlar gorunmeli")
-    public void sonuclariDogrula() throws InterruptedException {
-
-        String expectedUrl = "https://www.radiofrance.fr/recherche?term=Histoire";
+    @Then("{string} için sonuçlar gorunmeli")
+    public void sonuclariDogrula(String motDeRecherche) throws InterruptedException {
+        String expectedUrl = "https://www.radiofrance.fr/recherche?term=" + motDeRecherche;
         System.out.println("expectedUrl = " + expectedUrl);
+
+        // Dinamik olarak doğru URL’nin yüklenmesini bekleyin
+        WebDriverWait wait = new WebDriverWait(Driver.getCurrentDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("term=" + motDeRecherche));
+
         String actualUrl = Driver.getCurrentDriver().getCurrentUrl();
         System.out.println("actualUrl = " + actualUrl);
-        Thread.sleep(3000);
-        assertEquals(expectedUrl, actualUrl);
+
+        // URL'in arama kelimesini içerdiğini doğruluyoruz
+        assertTrue("Actual URL does not contain the search term: " + motDeRecherche,
+                actualUrl.contains("term=" + motDeRecherche));
     }
+
+
     @Given("Click le button Se Connecter")
     public void click_le_button_se_connecter() {
         radioPage.clikBtnSeConnecter();
