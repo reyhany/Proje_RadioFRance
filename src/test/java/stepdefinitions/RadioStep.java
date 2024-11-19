@@ -17,27 +17,30 @@ public class RadioStep {
 
     RadioPage radioPage = new RadioPage();
     public RadioStep(){
-
     }
 
 
     @Then("Ana sayfada olduğumu doğruluyorum")
     public void anaSayfayiDogrula() {
-
     }
+
     @When("{string} düğmesine tıklarsam")
     public void düğmesineTikla(String aramaButonu) {
         radioPage.clickBtnRechercher();
+        radioPage.clickBtnRechercher2();
     }
 
     @When("Arama alanına {string} yazarsam")
-    public void aramaYap(String histoire) {
+    public void aramaYap(String histoire) throws InterruptedException {
         radioPage.aramaYap(histoire);
+        radioPage.clickBtnRechercher2();
 
     }
+
     @Then("{string} için sonuçlar gorunmeli")
     public void sonuclariDogrula(String motDeRecherche) throws InterruptedException {
         String expectedUrl = "https://www.radiofrance.fr/recherche?term=" + motDeRecherche;
+
         System.out.println("expectedUrl = " + expectedUrl);
 
         // Dinamik olarak doğru URL’nin yüklenmesini bekleyin
