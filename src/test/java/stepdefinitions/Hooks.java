@@ -19,7 +19,7 @@ import utils.OS;
 
 public class Hooks {
     public static final String APK_NAME = "radio-france.apk";
-    public static final String WEB_URL = "https://www.radiofrance.fr/franceculture";
+    public static final String WEB_URL = "https://www.radiofrance.fr/";
 
     protected WebDriverWait wait;
     private utils.ConfigReader ConfigReader = new utils.ConfigReader();
