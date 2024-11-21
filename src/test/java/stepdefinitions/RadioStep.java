@@ -3,20 +3,41 @@ package stepdefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
+import org.junit.Assert;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.BasePage;
+
 import pages.RadioPage;
 import utils.Driver;
 
 import java.time.Duration;
+
+
+import static java.awt.SystemColor.text;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RadioStep {
 
+    private final WebDriverWait wait;
     RadioPage radioPage = new RadioPage();
+
+    private WebDriver driver;
+    BasePage basePage = new BasePage(driver);
+    Actions actions = new Actions(driver);
+    public RadioStep(WebDriver driver){
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.actions = new Actions(driver);
+
     public RadioStep(){
+
     }
 
 
@@ -103,4 +124,22 @@ public class RadioStep {
     public void verifie_que_le_message_apparait(String message) {
       //  radioPage.verificationAvecLocationText(message,message);
     }
+
+    @When("The user displays and clicks title of Catégories")
+    public void the_user_displays_and_clicks_title_of_catégories() {
+// WebDriverWait tanımlayın
+       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10 saniyeye kadar bekler
+
+// categories elementini tıklamadan önce bekleme ekleyin
+       // WebElement categoriesElement = wait.until(ExpectedConditions.elementToBeClickable(radioPage.categories));
+
+// Bekleme tamamlandıktan sonra tıklayın
+      //  categoriesElement.click();
+        radioPage.Categories();
+    }
+    @Then("The user displays and clicks all part of categoies")
+    public void the_user_displays_and_clicks_all_part_of_categoies() {
+
+    }
+
 }

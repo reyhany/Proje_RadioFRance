@@ -4,10 +4,16 @@ import com.github.javafaker.Faker;
 import io.appium.java_client.AppiumBy;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import utils.Driver;
 import utils.OS;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static utils.Driver.getCurrentDriver;
 
@@ -95,6 +101,11 @@ public class RadioPage extends BasePage {
         Assert.assertEquals(expectedMessage,actualMessage);
     }
 
+    public void Categories() {
+         WebElement closeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Catégories']")));
+        closeButton.click();
+        System.out.println("Pop-up successfully closed.");
+    }
 
 
 }
