@@ -2,12 +2,16 @@ package stepdefinitions;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.MusiquePage;
 import java.time.Duration;
+import java.util.List;
+
 import static org.junit.Assert.assertTrue;
 import static utils.Driver.getCurrentDriver;
 
@@ -95,4 +99,57 @@ public class MusiqueStep {
         Thread.sleep(5000); // 5 saniye bekle
         musiquePage.volumeButtonClick();
     }
+
+    @When("Kullanıcı Vitesse de lecture butonuna tıklar")
+    public void kullanıcı_vitesse_de_lecture_butonuna_tıklar() {
+        musiquePage.vitesseDeLectureClick();
+    }
+    @Then("Kullanıcı hız ayarlarını sırayla seçer ve doğrular")
+    public void kullanici_hiz_ayarlarini_sirayla_secer_ve_dogrular() throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(getCurrentDriver(), Duration.ofSeconds(10));
+
+        // Hız ayar butonunu açmak için musiquePage metodunu kullan
+        musiquePage.vitesseDeLectureClick();
+        System.out.println("Vitesse de lecture butonuna tıklandı.");
+
+        // Hız seçeneklerini sırayla seçme ve doğrulama
+        for (int i = 1; i <= 6; i++) {
+            // XPath ile sıradaki seçeneği bulma
+            WebElement option = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//*[@class='RemoteSelectOption qg-st6 svelte-v7tpv8'])[" + i + "]")));
+
+            // Seçeneğin metnini alma (örneğin: x1, x1.2, x1.5, vb.)
+            String expectedSpeed = option.getText().replace("x", ""); // "x" kısmını kaldır
+            if (expectedSpeed.contains(" ")) {
+                expectedSpeed = expectedSpeed.split(" ")[0]; // "par défaut" gibi metinleri temizle
+            }
+            System.out.println("Seçilen hız: " + expectedSpeed);
+
+            // Seçeneği tıklama
+            try {
+                option.click();
+            } catch (ElementNotInteractableException e) {
+                System.out.println("Option click with JavaScript due to non-interactable issue.");
+                JavascriptExecutor js = (JavascriptExecutor) getCurrentDriver();
+                js.executeScript("arguments[0].click();", option);
+            }
+            Thread.sleep(5000); // Alternatif olarak Explicit Wait kullanılabilir
+
+            // Hız butonundaki değeri kontrol etme
+            WebElement currentSpeed = getCurrentDriver().findElement(By.xpath("//button[@title='Vitesse de lecture']"));
+            String appliedSpeed = currentSpeed.getText();
+
+            // Doğrulama
+            assertTrue("Hız doğru uygulanmadı: Beklenen = " + expectedSpeed + ", Mevcut = " + appliedSpeed,
+                    appliedSpeed.contains(expectedSpeed));
+            System.out.println("Hız başarıyla değiştirildi ve doğrulandı: " + expectedSpeed);
+
+            // Dropdown menüsünü tekrar aç
+            if (i < 6) { // Son seçenekte tekrar açmaya gerek yok
+                musiquePage.vitesseDeLectureClick();
+                Thread.sleep(1000); // Dropdown menüsünün tekrar açılması için kısa bekleme
+            }
+
+        }
+    }
+
 }
