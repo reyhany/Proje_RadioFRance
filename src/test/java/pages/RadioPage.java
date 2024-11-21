@@ -83,8 +83,12 @@ public class RadioPage extends BasePage {
         Assert.assertEquals(expectedMessage,actualMessage);
     }
 
-@FindBy(xpath = "(//*[text()=\"Catégories\"])[1]")
-    public WebElement categories;
+    public void Categories() {
+         WebElement closeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Catégories']")));
+        closeButton.click();
+        System.out.println("Pop-up successfully closed.");
+    }
+
 
 }
 
