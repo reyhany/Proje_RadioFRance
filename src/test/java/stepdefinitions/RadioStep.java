@@ -37,7 +37,7 @@ public class RadioStep {
 
     }
 
-    @Then("{string} için sonuçlar gorunmeli")
+   /* @Then("{string} için sonuçlar gorunmeli")
     public void sonuclariDogrula(String motDeRecherche) throws InterruptedException {
         String expectedUrl = "https://www.radiofrance.fr/recherche?term=" + motDeRecherche;
 
@@ -53,6 +53,24 @@ public class RadioStep {
         // URL'in arama kelimesini içerdiğini doğruluyoruz
         assertTrue("Actual URL does not contain the search term: " + motDeRecherche,
                 actualUrl.contains("term=" + motDeRecherche));
+    }*/
+
+    @Then("{string} için sonuçlar gorunmeli")
+    public void sonuclariDogrula(String motDeRecherche) throws InterruptedException {
+        // Beklenen URL'yi oluşturuyoruz
+        String expectedUrl = "https://www.radiofrance.fr/recherche?term=" + motDeRecherche;
+        System.out.println("expectedUrl = " + expectedUrl);
+
+        // Dinamik olarak doğru URL’nin yüklenmesini bekliyoruz
+        WebDriverWait wait = new WebDriverWait(Driver.getCurrentDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("term=" + motDeRecherche));
+
+        // Gerçek URL'yi alıyoruz
+        String actualUrl = Driver.getCurrentDriver().getCurrentUrl();
+        System.out.println("actualUrl = " + actualUrl);
+
+        // URL'in doğru olduğunu doğruluyoruz
+        assertEquals("Expected URL does not match the actual URL", expectedUrl, actualUrl);
     }
 
 
