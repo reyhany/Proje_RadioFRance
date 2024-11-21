@@ -66,4 +66,10 @@ public class MusiquePage {
         // Kaydırıcıyı aşağı kaydırmak için, dikeyde 10px kaydırıyoruz
         action.dragAndDropBy(volumeSliderElement, 0, 10).build().perform();
     }
+    public void vitesseDeLectureClick(){
+        By btnVitesseDeLecture = OS.isAndroid() ?
+                AppiumBy.xpath("") : //Android locate
+                By.xpath("//*[@title='Vitesse de lecture']"); //Web locate
+        getCurrentDriver().findElement(btnVitesseDeLecture).click();
+    }
 }

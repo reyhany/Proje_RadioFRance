@@ -1,6 +1,6 @@
 Feature: Müzik dinleme özelliği
 
-  Scenario: Kullanıcı bir müzik parçasını dinlemeye başlar
+  Scenario: Kullanıcı bir müzik parçasını dinler
     Given Uygulamayı başlatıyorum
     Then Musique başlığına tıklıyorum
     Then Sunulan ilk eseri dinlemek için Écouter butonuna tıklarım
@@ -14,3 +14,11 @@ Feature: Müzik dinleme özelliği
     And Müzik ayar çubuğundaki ses seviyesini artırırım
     And Müzik ayar çubuğundaki ses seviyesini azaltırım
     Then Butonların doğru şekilde çalıştığını doğrularım
+@muz
+  Scenario: Ayar cubugundaki hız ayarlarını değiştirme ve değişiklikleri doğrulama
+    Given Uygulamayı başlatıyorum
+    Then Musique başlığına tıklıyorum
+    And Sunulan ilk eseri dinlemek için Écouter butonuna tıklarım
+    When Kullanıcı Vitesse de lecture butonuna tıklar
+    Then Kullanıcı hız ayarlarını sırayla seçer ve doğrular
+
