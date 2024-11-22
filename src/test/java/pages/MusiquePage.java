@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import utils.OS;
 
 import static utils.Driver.getCurrentDriver;
@@ -72,4 +73,24 @@ public class MusiquePage {
                 By.xpath("//*[@title='Vitesse de lecture']"); //Web locate
         getCurrentDriver().findElement(btnVitesseDeLecture).click();
     }
+    public void reduirePlayerClick(){
+        By btnReduirePlayer = OS.isAndroid() ?
+                AppiumBy.xpath("") : //Android locate
+                By.xpath("//*[@*='Réduire le player']"); //Web locate
+        getCurrentDriver().findElement(btnReduirePlayer).click();
+    }
+    public void agrandirPlayerClick(){
+        By btnAgrandirPlayer = OS.isAndroid() ?
+                AppiumBy.xpath("") : //Android locate
+                By.xpath("//*[@*='Agrandir le player']"); //Web locate
+        getCurrentDriver().findElement(btnAgrandirPlayer).click();
+    }
+    public void fermerPlayerClick(){
+        By btnFermerPlayer = OS.isAndroid() ?
+                AppiumBy.xpath("") : //Android locate
+                By.xpath("//*[@*='Fermer le player']"); //Web locate
+        getCurrentDriver().findElement(btnFermerPlayer).click();
+    }
+    @FindBy(xpath = "//*[@*='Fermer le player']")
+    public WebElement btnFermerPlayer;
 }

@@ -1,24 +1,25 @@
 Feature: Müzik dinleme özelliği
 
-  Scenario: Kullanıcı bir müzik parçasını dinler
-    Given Uygulamayı başlatıyorum
-    Then Musique başlığına tıklıyorum
-    Then Sunulan ilk eseri dinlemek için Écouter butonuna tıklarım
-    And Müziğin çalmaya başladığını doğrularım
-
-  Scenario: Müzik ayar çubuğundaki butonların doğru çalışıp çalışmadığını kontrol etme
+  Background:
     Given Uygulamayı başlatıyorum
     And Musique başlığına tıklıyorum
     And Sunulan ilk eseri dinlemek için Écouter butonuna tıklarım
+
+  Scenario: Kullanıcı bir müzik parçasını dinler
+    And Müziğin çalmaya başladığını doğrularım
+
+  Scenario: Müzik ayar çubuğundaki butonların doğru çalışıp çalışmadığını kontrol etme
     When Müzik ayar çubuğundaki ses açma-kapama butonuna tıklarım
     And Müzik ayar çubuğundaki ses seviyesini artırırım
     And Müzik ayar çubuğundaki ses seviyesini azaltırım
     Then Butonların doğru şekilde çalıştığını doğrularım
-@muz
-  Scenario: Ayar cubugundaki hız ayarlarını değiştirme ve değişiklikleri doğrulama
-    Given Uygulamayı başlatıyorum
-    Then Musique başlığına tıklıyorum
-    And Sunulan ilk eseri dinlemek için Écouter butonuna tıklarım
+
+  Scenario: Ayar çubuğundaki hız ayarlarını değiştirme ve değişiklikleri doğrulama
     When Kullanıcı Vitesse de lecture butonuna tıklar
     Then Kullanıcı hız ayarlarını sırayla seçer ve doğrular
 
+  @muz
+  Scenario: Ayar çubuğunda küçültme ve büyütme
+    When Kullanıcı Reduire Player butonuna tıklar ve ekran küçülür
+    And Kullanıcı Agrandir Player butonuna tıklar ve ekran büyür
+    Then Müzik ayar çubuğunu kapatır ve işlemi doğrular
