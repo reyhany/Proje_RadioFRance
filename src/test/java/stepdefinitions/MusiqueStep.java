@@ -1,7 +1,9 @@
 package stepdefinitions;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -151,5 +153,46 @@ public class MusiqueStep {
 
         }
     }
+    @When("Kullanıcı Reduire Player butonuna tıklar ve ekran küçülür")
+    public void kullanici_reduire_player_butonuna_tiklar_ve_ekran_kuculur() throws InterruptedException {
+
+        // Reduire Player butonuna tıklama işlemi
+        musiquePage.reduirePlayerClick();
+        System.out.println("Reduire Player butonuna tıklandı.");
+
+        // Player küçültme durumunun doğrulanması
+        WebElement agrandirPlayer = getCurrentDriver().findElement(By.xpath("//*[@*='Agrandir le player']"));
+        Assert.assertTrue("Reduire Player butonu çalışmadı!", agrandirPlayer.isDisplayed());
+        System.out.println("Player ekranı küçültme işlemi başarıyla gerçekleşti.");
+        Thread.sleep(5);
+    }
+
+    @And("Kullanıcı Agrandir Player butonuna tıklar ve ekran büyür")
+    public void kullanici_agrandir_player_butonuna_tiklar_ve_ekran_buyur() throws InterruptedException {
+
+        // Agrandir Player butonuna tıklama işlemi
+        musiquePage.agrandirPlayerClick();
+        System.out.println("Agrandir Player butonuna tıklandı.");
+
+        // Player büyütme durumunun doğrulanması
+        WebElement reduirePlayer = getCurrentDriver().findElement(By.xpath("//*[@*='Réduire le player']"));
+        Assert.assertTrue("Agrandir Player butonu çalışmadı!", reduirePlayer.isDisplayed());
+        System.out.println("Player ekranı büyütme işlemi başarıyla gerçekleşti.");
+        Thread.sleep(5);
+    }
+    @Then("Müzik ayar çubuğunu kapatır ve işlemi doğrular")
+    public void muzik_ayar_cubugunu_kapatir_ve_islemi_dogrular() throws InterruptedException {
+        // Ayar çubuğunu kapatma butonuna tıklama
+        musiquePage.fermerPlayerClick();
+        System.out.println("Müzik ayar çubuğu kapatma butonuna tıklandı.");
+
+        // Ayar çubuğunun kapandığını doğrulama
+        boolean isClosed = getCurrentDriver().findElements(By.xpath("//*[@*='Ayar Çubuğu']")).isEmpty();
+        Assert.assertTrue("Müzik ayar çubuğu kapanmadı!", isClosed);
+        System.out.println("Müzik ayar çubuğu başarıyla kapatıldı ve doğrulandı.");
+        Thread.sleep(5);
+    }
+
+
 
 }
