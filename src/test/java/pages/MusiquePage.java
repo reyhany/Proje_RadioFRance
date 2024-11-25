@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 import static utils.Driver.getCurrentDriver;
 
 public class MusiquePage {
@@ -289,5 +289,167 @@ public class MusiquePage {
         assertNotEquals(actionDescription + " başarısız oldu!", timeBefore, timeAfter);
         System.out.println(actionDescription + " başarıyla doğrulandı.");
     }
+
+    // Musique anasayfadaki pause button
+    @FindBy(xpath = "//*[@*='Arrêter']")
+    public WebElement pauseBtn;
+
+    // pause yaptiktan sonra geri baslatmak icin buton, pause'la ayni aslinda
+    @FindBy(xpath = "(//*[@*='Lecture'])[1]")
+    public WebElement reprendreBtn;
+
+    // Ecouter plus tard  button
+    @FindBy(xpath = "//*[@*='BookmarkButton']")
+    public WebElement ecouterPlusTard;
+
+    // sayfanin saginda acilan se connecter menusu
+    @FindBy(xpath = "//*[@*='Modal-internalContainer svelte-1qn888q']")
+    public WebElement seConnecterMenu;
+
+    // sayfanin saginda acilan se connecter menudeki se connecter butonu
+    @FindBy(xpath = "(//span[text()='Se connecter'])[2]")
+    public WebElement seConnecterBtn2;
+
+    public void clickPauseButton() throws InterruptedException {
+        Thread.sleep(3000);
+        pauseBtn.click();
+        System.out.println("Pause butonuna basıldı ve müzik durduruldu.");
+         // Müzik durdurulma işlemi için bekleme
+        Thread.sleep(3000);
+    }
+
+    public void verifyMusicIsPaused() {
+        String currentTimeBefore = currentTimeElement.getText();
+        try {
+            Thread.sleep(3000); // Zaman ilerleyip ilerlemediğini kontrol etmek için bekleme
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        String currentTimeAfter = currentTimeElement.getText();
+        if (!currentTimeBefore.equals(currentTimeAfter)) {
+            throw new AssertionError("Müzik durdurulmadı!");
+        }
+        System.out.println("Müziğin durdurulduğu başarıyla doğrulandı.");
+    }
+
+    public void clickResumeButton() throws InterruptedException {
+        reprendreBtn.click();
+        System.out.println("Tekrar aynı düğmeye basıldı ve müzik yeniden başlatıldı.");
+        Thread.sleep(3000); // Müzik başlatma işlemi için bekleme
+    }
+
+    public void verifyMusicIsResumed() {
+        String currentTimeBefore = currentTimeElement.getText();
+        try {
+            Thread.sleep(3000); // Zaman ilerleyip ilerlemediğini kontrol etmek için bekleme
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        String currentTimeAfter = currentTimeElement.getText();
+        if (currentTimeBefore.equals(currentTimeAfter)) {
+            throw new AssertionError("Müzik yeniden başlamadı!");
+        }
+        System.out.println("Müziğin yeniden başladığı başarıyla doğrulandı.");
+    }
+
+    public void clickEcouterPlusTardButton() throws InterruptedException {
+        ecouterPlusTard.click();
+        System.out.println("Ecouter Plus Tard butonuna basıldı.");
+        Thread.sleep(3000); // Menü açılma işlemi için bekleme
+    }
+
+    public void verifySeConnecterMenuOpened() {
+        if (!seConnecterMenu.isDisplayed()) {
+            throw new AssertionError("Se connecter menüsü açılmadı!");
+        }
+        System.out.println("Se connecter menüsü başarıyla açıldı.");
+
+        // Se connecter butonunun menü içinde görüntülendiğini doğrulama
+        boolean isSeConnecterBtnVisible = seConnecterBtn2.isDisplayed();
+        if (!isSeConnecterBtnVisible) {
+            throw new AssertionError("Se connecter butonu menüde görüntülenmedi!");
+        }
+        System.out.println("Se connecter butonu menüde başarıyla görüntülendi.");
+    }
+
+    // sayfanin saginda acilan menuyu kapatma butonu
+    @FindBy(xpath = "//*[@*='ModalHeader-close svelte-xwavtz']")
+    public WebElement menuCloseBtn;
+
+    // sayfanin saginda acilan menudeki baslik
+    @FindBy(xpath = "//*[@*='DrawerPlaylist-text qg-tt4 svelte-11xinew']")
+    public WebElement textConnectezVous;
+
+    // sayfanin saginda acilan menudeki yazilar
+    @FindBy(xpath = "//*[@*='DrawerPlaylist-list g-unstyled-list svelte-11xinew']")
+    public WebElement textIn3line;
+
+    // sayfanin saginda acilan menudeki s'inscrire butonu
+    @FindBy(xpath = "//*[@*='DrawerPlaylist-signup']")
+    public WebElement sinscrireBtn;
+
+
+
+    public void closeSeConnecterMenu() {
+        if (menuCloseBtn.isDisplayed()) {
+            menuCloseBtn.click();
+            System.out.println("Se connecter menüsü başarıyla kapatıldı.");
+        } else {
+            throw new AssertionError("Se connecter menüsü kapatılamadı çünkü menü kapatma butonu görünmüyor.");
+        }
+    }
+    public void verifyInformationTextPresence() {
+        if (!textConnectezVous.isDisplayed() || !textIn3line.isDisplayed()) {
+            throw new AssertionError("Bilgilendirici yazılar görünmüyor.");
+        }
+        System.out.println("Bilgilendirici yazılar başarıyla görüntülendi.");
+    }
+    public void verifyLoginFormDisplayed() {
+        WebDriverWait wait = new WebDriverWait(getCurrentDriver(), Duration.ofSeconds(10));
+        try {
+            // Connexion butonunun aktif modda olduğunu bekle ve doğrula
+            WebElement connectionActive = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//button[contains(@class, 'active') and @aria-current='true' and text()='Connexion']")
+            ));
+            System.out.println("Giriş ekranı başarıyla açıldı: Connexion butonu aktif.");
+        } catch (TimeoutException e) {
+            throw new AssertionError("Giriş ekranı açılmadı: Connexion butonu aktif değil.", e);
+        }
+
+    }
+    public void clickSinscrireButton() {
+        if (sinscrireBtn.isDisplayed()) {
+            sinscrireBtn.click();
+            System.out.println("Kayıt ol butonuna tıklandı.");
+        } else {
+            throw new AssertionError("S'inscrire butonu görünmüyor.");
+        }
+    }
+
+    public void clickSeConnecterButton() {
+        seConnecterBtn2.click();
+    }
+    public void clickInscrireButton() {
+        WebDriverWait wait = new WebDriverWait(getCurrentDriver(), Duration.ofSeconds(10));
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(sinscrireBtn)).click();
+            System.out.println("S'inscrire butonuna başarıyla tıklandı.");
+        } catch (TimeoutException e) {
+            throw new AssertionError("S'inscrire butonuna tıklanamadı, buton bulunamadı veya tıklanabilir değil.", e);
+        }
+    }
+    public void verifyRegisterFormDisplayed() {
+        WebDriverWait wait = new WebDriverWait(getCurrentDriver(), Duration.ofSeconds(10));
+        try {
+            // Kayıt ekranı açıldığını doğrulamak için gerekli bir locator veya text kontrol edilir
+            WebElement registerForm = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//button[contains(@class, 'active') and @aria-current='true' and text()='Inscription']")
+            ));
+            System.out.println("Kayıt ekranı başarıyla açıldı: Inscription butonu aktif.");
+        } catch (TimeoutException e) {
+            throw new AssertionError("Kayıt ekranı açılmadı: Inscription butonu aktif değil.", e);
+        }
+    }
+
 }
 
