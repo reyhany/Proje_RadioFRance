@@ -112,6 +112,59 @@ public class MusiqueStep {
     public void muzik_suresinin_30_saniye_ileri_alindigini_dogrular() {
         musiquePage.verifyTimeChanged("30 saniye ileri alma");
     }
+    @When("Pause butonuna basarım ve müziği durdururum")
+    public void pauseButonunaBasarimVeMuzigiDurdururum() throws InterruptedException {
+        musiquePage.clickPauseButton();
+    }
 
+    @Then("Müziğin durdurulduğunu doğrularım")
+    public void muziginDurduruldugunuDogrularim() {
+        musiquePage.verifyMusicIsPaused();
+    }
+
+    @When("Tekrar aynı düğmeye basarım ve müzik yeniden başlar")
+    public void tekrarAyniDugmeyeBasarimVeMuzikYenidenBaslar() throws InterruptedException {
+        musiquePage.clickResumeButton();
+    }
+
+    @Then("Müziğin yeniden başladığını doğrularım")
+    public void muziginYenidenBasladiginiDogrularim() {
+        musiquePage.verifyMusicIsResumed();
+    }
+
+    @When("Ecouter Plus Tard butonuna basarım")
+    public void ecouterPlusTardButonunaBasarim() throws InterruptedException {
+        musiquePage.clickEcouterPlusTardButton();
+    }
+
+    @Then("Se connecter menüsü açılır")
+    public void seConnecterMenusuAcilir() {
+        musiquePage.verifySeConnecterMenuOpened();
+    }
+
+    @Then("Menü üzerindeki bilgilendirici yazıların varlığını doğrularım")
+    public void menü_üzerindeki_bilgilendirici_yazıların_varlığını_doğrularım() {
+        musiquePage.verifyInformationTextPresence();
+    }
+    @When("Se connecter butonuna basarım")
+    public void se_connecter_butonuna_basarım() {
+        musiquePage.clickSeConnecterButton(); // Bu metod sayfa nesnesinden çağrılacak
+    }
+    @Then("Giriş ekranının açıldığını doğrularım")
+    public void giriş_ekranının_açıldığını_doğrularım() {
+        musiquePage.verifyLoginFormDisplayed();
+    }
+    @Then("Giriş ekranını kapatırım")
+    public void giriş_ekranını_kapatırım() {
+        musiquePage.closeSeConnecterMenu();
+    }
+    @When("S'inscrire butonuna basarım")
+    public void clickInscrireButton() {
+        musiquePage.clickInscrireButton();
+    }
+    @Then("Kayıt ekranının açıldığını doğrularım")
+    public void verifyRegisterScreenDisplayed() {
+        musiquePage.verifyRegisterFormDisplayed();
+    }
 
 }
