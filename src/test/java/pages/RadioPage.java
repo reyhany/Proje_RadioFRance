@@ -26,21 +26,21 @@ public class RadioPage extends BasePage {
         WebElement searchBox = getCurrentDriver().findElement(ara);
         searchBox.clear(); // Eğer kutuda eski bir metin varsa temizle
         searchBox.sendKeys(searchTerm); // "histoire" veya istediğin metni yaz
-        searchBox.submit(); // Arama kutusuna yazdıktan sonra, arama yapmak için submit işlemi yapabilirsiniz.
+
 
     }
 
     public void clickBtnRechercher() {
         By btnRecherche = OS.isAndroid() ?
-                AppiumBy.xpath("//android.widget.FrameLayout[@content-desc='Search']") : //Android locate
+                AppiumBy.xpath("//android.widget.FrameLayout[@content-desc=\"Search\"]") : //Android locate
                 By.xpath("//span[normalize-space()='Rechercher']"); //Web locate
         getCurrentDriver().findElement(btnRecherche).click();
     }
 
     public void clickBtnRechercher2() {
         By btnRechercher2 = OS.isAndroid() ?
-                AppiumBy.xpath("//android.widget.Button[@content-desc='Search podcasts']") : //Android locate
-                By.xpath("//button[normalize-space()='Search podcasts']"); //Web locate
+                AppiumBy.xpath("//android.widget.Button[@content-desc=\"Search podcasts\"]") : //Android locate
+                By.xpath("//*[@*='Rechercher']"); //Web locate
         getCurrentDriver().findElement(btnRechercher2).click();
     }
 

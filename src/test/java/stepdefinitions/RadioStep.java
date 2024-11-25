@@ -3,8 +3,13 @@ package stepdefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.RadioPage;
 import utils.Driver;
+
+import java.time.Duration;
 
 import static org.junit.Assert.assertEquals;
 
@@ -70,4 +75,23 @@ public class RadioStep {
     public void verifie_que_le_message_apparait(String message) {
         //  radioPage.verificationAvecLocationText(message,message);
     }
+    @Then("{string} için sonuçlar gorunmeli")
+    public void sonuclariDogrula(String motDeRecherche) throws InterruptedException {
+        // Beklenen URL'yi oluşturuyoruz
+        String expectedUrl = "https://www.radiofrance.fr/recherche?term=" + motDeRecherche;
+        System.out.println("expectedUrl = " + expectedUrl);
+
+        // Dinamik olarak doğru URL’nin yüklenmesini bekliyoruz
+        WebDriverWait wait = new WebDriverWait(Driver.getCurrentDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("term=" + motDeRecherche));
+
+        // Gerçek URL'yi alıyoruz
+        String actualUrl = Driver.getCurrentDriver().getCurrentUrl();
+        System.out.println("actualUrl = " + actualUrl);
+
+        // URL'in doğru olduğunu doğruluyoruz
+        Assert.assertEquals("Beklenen URL ile mevcut URL eşleşmiyor!", expectedUrl, actualUrl);
+        System.out.println("Arama sonuçları URL doğrulandı: " + actualUrl);
+    }
+
 }
