@@ -1,3 +1,4 @@
+
 Feature: Müzik dinleme özelliği
 
   Background:
@@ -18,8 +19,15 @@ Feature: Müzik dinleme özelliği
     When Kullanıcı Vitesse de lecture butonuna tıklar
     Then Kullanıcı hız ayarlarını sırayla seçer ve doğrular
 
-  @muz
+
   Scenario: Ayar çubuğunda küçültme ve büyütme
     When Kullanıcı Reduire Player butonuna tıklar ve ekran küçülür
     And Kullanıcı Agrandir Player butonuna tıklar ve ekran büyür
     Then Müzik ayar çubuğunu kapatır ve işlemi doğrular
+
+  @muz
+  Scenario: Müzik ayar çubuğunda 15 saniye geri ve 30 saniye ileri düğmelerinin doğru çalışıp çalışmadığını kontrol etme
+    When Kullanıcı 15 saniye geri düğmesine tıklar
+    Then Müzik süresinin 15 saniye geri alındığını doğrular
+    When Kullanıcı 30 saniye ileri düğmesine tıklar
+    Then Müzik süresinin 30 saniye ileri alındığını doğrular
