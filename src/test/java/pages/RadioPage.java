@@ -32,7 +32,7 @@ public class RadioPage extends BasePage {
 
     public void clickBtnRechercher() {
         By btnRecherche = OS.isAndroid() ?
-                AppiumBy.xpath("//android.widget.FrameLayout[@content-desc=\"Search\"]") : //Android locate
+                AppiumBy.xpath("//android.widget.FrameLayout[@content-desc=\'Search\']") : //Android locate
                 By.xpath("//span[normalize-space()='Rechercher']"); //Web locate
         getCurrentDriver().findElement(btnRecherche).click();
     }
