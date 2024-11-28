@@ -25,9 +25,11 @@ public class RadioStep {
     }
 
     @When("{string} düğmesine tıklarsam")
-    public void düğmesineTikla(String aramaButonu) {
+    public void düğmesineTikla(String aramaButonu) throws InterruptedException {
         radioPage.clickBtnRechercher();
+        Thread.sleep(2000);
         radioPage.clickBtnRechercher2();
+        Thread.sleep(2000);
     }
 
     @When("Arama alanına {string} yazarsam")
