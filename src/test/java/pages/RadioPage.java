@@ -22,7 +22,16 @@ public class RadioPage extends BasePage {
         By ara = OS.isAndroid() ?
                 AppiumBy.androidUIAutomator("new UiSelector().text(\"Recherche\")") :
                 By.xpath("//input[@aria-label='Rechercher un podcast, un épisode, une personnalité...']");
+
         sendKeys(ara, searchTerm);
+
+        // Arama kutusuna metin yazma işlemi
+        WebElement searchBox = getCurrentDriver().findElement(ara);
+        searchBox.clear(); // Eğer kutuda eski bir metin varsa temizle
+        searchBox.sendKeys(searchTerm); // "histoire" veya istediğin metni yaz
+
+
+
     }
 
     public void clickBtnRechercher() {
@@ -35,7 +44,11 @@ public class RadioPage extends BasePage {
     public void clickBtnRechercher2() {
         By btnRechercher2 = OS.isAndroid() ?
                 AppiumBy.xpath("//android.widget.Button[@content-desc=\"Search podcasts\"]") : //Android locate
+
                 By.xpath("//button[normalize-space()='Search podcasts']"); //Web locate
+
+                By.xpath("//*[@*='Rechercher']"); //Web locate
+
         getCurrentDriver().findElement(btnRechercher2).click();
     }
 
@@ -85,7 +98,7 @@ public class RadioPage extends BasePage {
         getCurrentDriver().findElement(btnSinscrire).click();
     }
     public void verificationAvecLocationText(String value,String expectedMessage) {
-       String actualMessage = Driver.getCurrentDriver().findElement(By.xpath("//*[text()='" + value + "']")).getText();
+        String actualMessage = Driver.getCurrentDriver().findElement(By.xpath("//*[text()='" + value + "']")).getText();
         Assert.assertEquals(expectedMessage,actualMessage);
     }
 

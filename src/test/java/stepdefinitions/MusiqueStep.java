@@ -1,23 +1,20 @@
 package stepdefinitions;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.MusiquePage;
-import java.time.Duration;
 import static org.junit.Assert.assertTrue;
-import static utils.Driver.getCurrentDriver;
+
 
 public class MusiqueStep {
     MusiquePage musiquePage = new MusiquePage();
 
+
     @Then("Musique başlığına tıklıyorum")
     public void musique_başlığına_tıklıyorum() {
         musiquePage.clickBtnMusique();
-        waitForUrl("https://www.radiofrance.fr/ecouter-musique");
+        musiquePage.waitForUrl("https://www.radiofrance.fr/ecouter-musique");
     }
 
     @Then("Sunulan ilk eseri dinlemek için Écouter butonuna tıklarım")
@@ -26,24 +23,14 @@ public class MusiqueStep {
     }
 
     @Then("Müziğin çalmaya başladığını doğrularım")
-    public void müziğin_çalmaya_başladığını_doğrularım() {
-        WebDriverWait wait = new WebDriverWait(getCurrentDriver(), Duration.ofSeconds(15));
-        WebElement timeSpan = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@*='current']")));
-        String initialTime = timeSpan.getText();
-
-        try {
-            Thread.sleep(5000); // 5 saniye bekle
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        String updatedTime = timeSpan.getText();
-        assertTrue("Müzik oynatılmaya başlamadı.", !initialTime.equals(updatedTime));
+    public void müziğin_çalmaya_başladığını_doğrularım() throws InterruptedException {
+        // MusiquePage içindeki metodu çağırıyoruz
+        musiquePage.verifyMusicIsPlaying();
     }
 
     @When("Müzik ayar çubuğundaki ses açma-kapama butonuna tıklarım")
     public void müzik_ayar_çubuğundaki_ses_açma_butonuna_tıklarım() throws InterruptedException {
-        toggleVolumeButton();
+        musiquePage.toggleVolumeButton();
     }
 
     @When("Müzik ayar çubuğundaki ses kapama butonuna tıklarım")
@@ -63,36 +50,121 @@ public class MusiqueStep {
 
     @Then("Butonların doğru şekilde çalıştığını doğrularım")
     public void butonlarin_dogru_sekilde_calistigini_dogrularim() {
-        int initialVolume = getCurrentVolume();
+        int initialVolume = musiquePage.getCurrentVolume();
         musiquePage.increaseVolume();
-        int increasedVolume = getCurrentVolume();
+        int increasedVolume = musiquePage.getCurrentVolume();
         assertTrue("Ses artırma butonu çalışmadı", increasedVolume > initialVolume);
 
         musiquePage.decreaseVolume();
-        int decreasedVolume = getCurrentVolume();
+        int decreasedVolume = musiquePage.getCurrentVolume();
         assertTrue("Ses azaltma butonu çalışmadı", decreasedVolume < increasedVolume);
 
         musiquePage.increaseVolume();
-        int finalVolume = getCurrentVolume();
+        int finalVolume = musiquePage.getCurrentVolume();
         assertTrue("Ses artırma butonu tekrar çalışmadı", finalVolume > decreasedVolume);
     }
 
-    private int getCurrentVolume() {
-        WebElement volumeSliderElement = getCurrentDriver().findElement(By.xpath("//*[@id='playerVolume']"));
-        String volumeValue = volumeSliderElement.getAttribute("aria-valuenow");
-        return (int) Double.parseDouble(volumeValue);
+
+    @When("Kullanıcı Vitesse de lecture butonuna tıklar")
+    public void kullanıcı_vitesse_de_lecture_butonuna_tıklar(){
+        musiquePage.vitesseDeLectureClick();}
+
+    @Then("Kullanıcı hız ayarlarını sırayla seçer ve doğrular")
+    public void kullanici_hiz_ayarlarini_sirayla_secer_ve_dogrular() throws InterruptedException {
+        musiquePage.selectAndVerifySpeedOptions();
+
+
+    }
+    @When("Kullanıcı Reduire Player butonuna tıklar ve ekran küçülür")
+    public void kullanici_reduire_player_butonuna_tiklar_ve_ekran_kuculur() {
+        // player ekranini küçült
+        musiquePage.togglePlayerSize("reduire");
     }
 
-    private void waitForUrl(String expectedUrl) {
-        WebDriverWait wait = new WebDriverWait(getCurrentDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlToBe(expectedUrl));
-        String actualUrl = getCurrentDriver().getCurrentUrl();
-        assertTrue("Beklenen URL: " + expectedUrl + ", fakat mevcut URL: " + actualUrl, actualUrl.equals(expectedUrl));
+    @And("Kullanıcı Agrandir Player butonuna tıklar ve ekran büyür")
+    public void kullanici_agrandir_player_butonuna_tiklar_ve_ekran_buyur() {
+        // player ekranini büyüt
+        musiquePage.togglePlayerSize("agrandir");
     }
 
-    private void toggleVolumeButton() throws InterruptedException {
-        musiquePage.volumeButtonClick();
-        Thread.sleep(5000); // 5 saniye bekle
-        musiquePage.volumeButtonClick();
+    @Then("Müzik ayar çubuğunu kapatır ve işlemi doğrular")
+    public void muzik_ayar_cubugunu_kapatir_ve_islemi_dogrular() {
+        // ayar çubuğunu kapat
+        musiquePage.fermerPlayer();
     }
+
+
+    @When("Kullanıcı 15 saniye geri düğmesine tıklar")
+    public void kullanici_15_saniye_geri_dugmesine_tiklar() {
+        musiquePage.click15SecondsBack();
+    }
+
+    @Then("Müzik süresinin 15 saniye geri alındığını doğrular")
+    public void muzik_suresinin_15_saniye_geri_alindigini_dogrular() {
+        musiquePage.verifyTimeChanged("15 saniye geri alma");
+    }
+    @When("Kullanıcı 30 saniye ileri düğmesine tıklar")
+    public void kullanici_30_saniye_ileri_dugmesine_tiklar() {
+        musiquePage.click30SecondsForward();
+    }
+
+    @Then("Müzik süresinin 30 saniye ileri alındığını doğrular")
+    public void muzik_suresinin_30_saniye_ileri_alindigini_dogrular() {
+        musiquePage.verifyTimeChanged("30 saniye ileri alma");
+    }
+    @When("Pause butonuna basarım ve müziği durdururum")
+    public void pauseButonunaBasarimVeMuzigiDurdururum() throws InterruptedException {
+        musiquePage.clickPauseButton();
+    }
+
+    @Then("Müziğin durdurulduğunu doğrularım")
+    public void muziginDurduruldugunuDogrularim() {
+        musiquePage.verifyMusicIsPaused();
+    }
+
+    @When("Tekrar aynı düğmeye basarım ve müzik yeniden başlar")
+    public void tekrarAyniDugmeyeBasarimVeMuzikYenidenBaslar() throws InterruptedException {
+        musiquePage.clickResumeButton();
+    }
+
+    @Then("Müziğin yeniden başladığını doğrularım")
+    public void muziginYenidenBasladiginiDogrularim() {
+        musiquePage.verifyMusicIsResumed();
+    }
+
+    @When("Ecouter Plus Tard butonuna basarım")
+    public void ecouterPlusTardButonunaBasarim() throws InterruptedException {
+        musiquePage.clickEcouterPlusTardButton();
+    }
+
+    @Then("Se connecter menüsü açılır")
+    public void seConnecterMenusuAcilir() {
+        musiquePage.verifySeConnecterMenuOpened();
+    }
+
+    @Then("Menü üzerindeki bilgilendirici yazıların varlığını doğrularım")
+    public void menü_üzerindeki_bilgilendirici_yazıların_varlığını_doğrularım() {
+        musiquePage.verifyInformationTextPresence();
+    }
+    @When("Se connecter butonuna basarım")
+    public void se_connecter_butonuna_basarım() {
+        musiquePage.clickSeConnecterButton(); // Bu metod sayfa nesnesinden çağrılacak
+    }
+    @Then("Giriş ekranının açıldığını doğrularım")
+    public void giriş_ekranının_açıldığını_doğrularım() {
+        musiquePage.verifyLoginFormDisplayed();
+    }
+    @Then("Giriş ekranını kapatırım")
+    public void giriş_ekranını_kapatırım() {
+        musiquePage.closeSeConnecterMenu();
+    }
+    @When("S'inscrire butonuna basarım")
+    public void clickInscrireButton() {
+        musiquePage.clickInscrireButton();
+    }
+    @Then("Kayıt ekranının açıldığını doğrularım")
+    public void verifyRegisterScreenDisplayed() {
+        musiquePage.verifyRegisterFormDisplayed();
+    }
+
 }
