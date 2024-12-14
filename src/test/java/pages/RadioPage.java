@@ -4,16 +4,10 @@ import com.github.javafaker.Faker;
 import io.appium.java_client.AppiumBy;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import utils.Driver;
 import utils.OS;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static utils.Driver.getCurrentDriver;
 
@@ -26,26 +20,21 @@ public class RadioPage extends BasePage {
 
     public void aramaYap(String searchTerm) {
         By ara = OS.isAndroid() ?
-                AppiumBy.id("com.radiofrance.radio.radiofrance.android:id/search_toolbar_search_edittext") :
+                AppiumBy.androidUIAutomator("new UiSelector().text(\"Recherche\")") :
                 By.xpath("//input[@aria-label='Rechercher un podcast, un épisode, une personnalité...']");
-        // Arama kutusuna metin yazma işlemi
-        WebElement searchBox = getCurrentDriver().findElement(ara);
-        searchBox.clear(); // Eğer kutuda eski bir metin varsa temizle
-        searchBox.sendKeys(searchTerm); // "histoire" veya istediğin metni yaz
-        searchBox.submit(); // Arama kutusuna yazdıktan sonra, arama yapmak için submit işlemi yapabilirsiniz.
-
+        sendKeys(ara, searchTerm);
     }
 
     public void clickBtnRechercher() {
         By btnRecherche = OS.isAndroid() ?
-                AppiumBy.xpath("//android.widget.FrameLayout[@content-desc='Search']") : //Android locate
+                AppiumBy.xpath("//android.widget.FrameLayout[@content-desc=\'Search\']") : //Android locate
                 By.xpath("//span[normalize-space()='Rechercher']"); //Web locate
         getCurrentDriver().findElement(btnRecherche).click();
     }
 
     public void clickBtnRechercher2() {
         By btnRechercher2 = OS.isAndroid() ?
-                AppiumBy.xpath("//android.widget.Button[@content-desc='Search podcasts']") : //Android locate
+                AppiumBy.xpath("//android.widget.Button[@content-desc=\"Search podcasts\"]") : //Android locate
                 By.xpath("//button[normalize-space()='Search podcasts']"); //Web locate
         getCurrentDriver().findElement(btnRechercher2).click();
     }
@@ -54,7 +43,6 @@ public class RadioPage extends BasePage {
         By resultsLocator = By.xpath(""); // Gerçek locator'ı kullanın.
         waitForElementVisible(resultsLocator); // Sonuçları bekliyoruz.
     }
-
 
     public void clikBtnSeConnecter() {
         By btnSeConnecter = OS.isAndroid() ?
@@ -101,11 +89,6 @@ public class RadioPage extends BasePage {
         Assert.assertEquals(expectedMessage,actualMessage);
     }
 
-    public void Categories() {
-         WebElement closeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Catégories']")));
-        closeButton.click();
-        System.out.println("Pop-up successfully closed.");
-    }
 
 
 }
